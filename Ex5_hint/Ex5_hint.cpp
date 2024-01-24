@@ -11,7 +11,6 @@ class Solid
 {
 public:
 	virtual double GetVolume() = 0;
-	virtual double GetSurface() = 0;
 	virtual string message() = 0;
 };
 
@@ -36,10 +35,6 @@ public:
 	{
 		return width * height * depth;
 	}
-	double GetSurface() override
-	{
-		return (width * height + height * depth + depth * width) * 2;
-	}
 	string message()
 	{
 		return "四角";
@@ -60,10 +55,6 @@ public:
 	double GetVolume()override
 	{
 		return radius * radius * M_PI * height;
-	}
-	double GetSurface()override
-	{
-		return    2 * M_PI * radius * (height + radius);
 	}
 	string message()
 	{
@@ -87,10 +78,6 @@ public:
 	{
 		return radius * radius * M_PI * height * 1 / 3;
 	}
-	double GetSurface()override
-	{
-		return radius * radius * M_PI + sqrt(radius * radius + height * height) * radius * M_PI;
-	}
 	string message()
 	{
 		return "円錐";
@@ -110,25 +97,49 @@ public:
 	{
 		return 4.0 / 3 * radius * radius * radius * M_PI;
 	}
-	double GetSurface()override
-	{
-		return 4 * M_PI * radius * radius;
-	}
 	string message()
 	{
 		return "球";
 	}
 };
+
+
 int main()
 {
-	Box box{ 2,2,2.2 };
-	Cylinder cylinder{ 2.2,2.2 };
-	Cone cone{ 2.2,2.2 };
-	Sphere sphere{ 2.2 };
+	Box box{ 9,2,10 };
+	Cylinder cylinder{ 2,5 };
+	Cone cone{ 3,3 };
+	Sphere sphere{ 3 };
+	int kuroneko[]={60,80,100,120,140,160,180,200};
+	int yuupack[] = { 60,80,100,120,140,160,170};
 	Solid* solids[] = { &box, &cylinder, &cone, &sphere };
 	for (Solid* s : solids)
 	{
-		cout << s->message() << ":体積=" << s->GetVolume() << ":表面積=" << s->GetSurface() << endl;
-		cout << "\n" << endl;
+		for (int i = 0; i < _countof(kuroneko); i++)
+		{
+			
+			if (kuroneko[i] >= s->GetVolume()) {
+				if (i < _countof(kuroneko)) {
+					cout << s->message() << ":体積=" << s->GetVolume() << endl;
+					cout << kuroneko[i] << "サイズ" << " " <<"黒猫" << endl;
+				}
+				break;
+			}
+		}
+		if (s->GetVolume() >kuroneko[7]) {
+			cout << s->message() << "は送れません" << " " << "黒猫" << endl;
+		}
+		for (int i = 0; i < _countof(yuupack); i++)
+		{
+			if (yuupack[i] >= s->GetVolume()) {
+				if (i < _countof(yuupack)) {
+					cout << yuupack[i] << "サイズ" << " " << "ゆうパック" << "\n" << endl;
+				}
+				break;
+			}
+		}
+		if (s->GetVolume()>yuupack[6]) {
+			cout << s->message() << "は送れません" << " " << "ゆうパック" << "\n" << endl;
+		}
 	};
 }
